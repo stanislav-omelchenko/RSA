@@ -329,7 +329,8 @@ pub trait PublicKeyEncoding: PublicKey {
     /// <https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem>
     fn to_pkcs8(&self) -> Result<Vec<u8>> {
         let oid = ASN1Block::ObjectIdentifier(0, rsa_oid());
-        let alg = ASN1Block::Sequence(0, vec![oid]);
+        let null = ASN1Block::Null(0);
+        let alg = ASN1Block::Sequence(0, vec![oid,null]);
 
         let bz = self.to_pkcs1()?;
         let octet_string = ASN1Block::BitString(0, bz.len() * BYTE_BIT_SIZE, bz);
